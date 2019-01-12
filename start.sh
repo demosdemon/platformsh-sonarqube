@@ -3,26 +3,26 @@
 set -e
 
 if ! command -v jq >/dev/null 2>&1; then
-    echo 'unable to locate `jq`!' >&2
-    exit 127
+  echo 'unable to locate `jq`!' >&2
+  exit 127
 fi
 
-database_username=$(echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '.database[].username'
-database_password=$(echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '.database[].password'
+database_username=$(echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '.database[].username')
+database_password=$(echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '.database[].password')
 database_url=$(echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '.database[] | "\(.scheme)://\(.host):\(.port)/\(.path)"')
 
 declare -a sq_opts
 
-for key in "${!sonar.@}"; do
-    sq_opts+=("-D${key}=${!key}")
+for key in "${!sonar@}"; do
+  sq_opts+=("-D${key}=${!key}")
 done
 
 echo "$PLATFORM_RELATIONSHIPS"
 
 exec java -jar sonarqube/lib/sonar-application-$SONAR_VERSION.jar \
-    -Dsonar.log.console=true \
-    -Dsonar.jdbc.username="$database_username" \
-    -Dsonar.jdbc.password="$database_password" \
-    -Dsonar.jdbc.url="$database_url" \
-    -Dsonar.web.javaAdditionalOpts="$SONARQUBE_WEB_JVM_OPTS -Djava.security.egd=file:/dev/./urandom" \
-    "${sq_opts[@]}"
+  -Dsonar.log.console=true \
+  -Dsonar.jdbc.username="$database_username" \
+  -Dsonar.jdbc.password="$database_password" \
+  -Dsonar.jdbc.url="$database_url" \
+  -Dsonar.web.javaAdditionalOpts="$SONARQUBE_WEB_JVM_OPTS -Djava.security.egd=file:/dev/./urandom" \
+  "${sq_opts[@]}"
