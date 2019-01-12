@@ -1,0 +1,2 @@
+export PATH="${PATH}:${PLATFORM_APP_DIR}/bin"
+export SONARQUBE_HOME="${PLATFORM_APP_DIR}/sonarqube"

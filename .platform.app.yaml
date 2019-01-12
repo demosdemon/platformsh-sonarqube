@@ -1,0 +1,39 @@
+name: sonarqube
+disk: 512
+type: java:8
+
+relationships:
+  database: postgresql:postgresql
+
+variables:
+  env:
+    JQ_VERSION: "1.6"
+    SONAR_VERSION: "7.5"
+
+hooks:
+  build: |
+    set -ex
+    tmpdir=$(mktemp -d)
+    mkdir -p bin
+    curl -o bin/jq -fSL https://github.com/stedolan/jq/releases/download/jq-${JQ_VERSION}/jq-linux64
+    chmod +x bin/jq
+    gpg --batch --recv-keys F1182E81C792928921DBCAB4CFCA4A29D26468DE
+    curl -o $tmpdir/sonarqube.zip -fSL https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${SONAR_VERSION}.zip
+    curl -o $tmpdir/sonarqube.zip.asc -fSL https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${SONAR_VERSION}.zip.asc
+    gpg --batch --verify $tmpdir/sonarqube.zip.asc $tmpdir/sonarqube.zip
+    unzip -o $tmpdir/sonarqube.zip -d .
+    rm -rf $tmpdir
+    mv sonarqube-$SONAR_VERSION sonarqube
+
+mount:
+  sonarqube/data:
+    mount_type: local
+    local: sonarqube-data
+
+web:
+  commands:
+    start: start.sh
+  locations:
+    /:
+      passthru: true
+      allow: false
