@@ -37,7 +37,7 @@ mount:
 
 web:
   commands:
-    start: start.sh
+    start: $PLATFORM_APP_DIR/start.sh
   locations:
     /:
       passthru: true
