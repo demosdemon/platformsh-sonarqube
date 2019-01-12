@@ -32,8 +32,11 @@ hooks:
 
 mount:
   sonarqube/data:
-    mount_type: local
-    local: sonarqube-data
+    source: local
+    source_path: sonarqube-data
+  sonarqube/temp:
+    source: local
+    source_path: sonarqube-temp
 
 web:
   commands:
