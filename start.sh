@@ -9,7 +9,7 @@ fi
 
 database_username=$(echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '.database[].username')
 database_password=$(echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '.database[].password')
-database_url=$(echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '.database[] | "\(.scheme)://\(.host):\(.port)/\(.path)"')
+database_url=$(echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '.database[] | "postgresql://\(.host):\(.port)/\(.path)"')
 
 declare -a sq_opts
 
