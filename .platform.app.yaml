@@ -4,6 +4,7 @@ type: java:8
 
 relationships:
   database: postgresql:postgresql
+  search: search:elasticsearch
 
 variables:
   env:
