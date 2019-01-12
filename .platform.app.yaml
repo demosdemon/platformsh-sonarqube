@@ -30,7 +30,7 @@ hooks:
     rm -rf $tmpdir
     mv sonarqube-$SONAR_VERSION sonarqube
 
-mount:
+mounts:
   sonarqube/data:
     source: local
     source_path: sonarqube-data
