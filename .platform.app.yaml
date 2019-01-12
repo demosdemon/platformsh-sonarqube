@@ -17,7 +17,11 @@ hooks:
     mkdir -p bin
     curl -o bin/jq -fSL https://github.com/stedolan/jq/releases/download/jq-${JQ_VERSION}/jq-linux64
     chmod +x bin/jq
-    gpg --batch --recv-keys F1182E81C792928921DBCAB4CFCA4A29D26468DE
+
+    export GNUPGHOME="$(mktemp -d)"
+    gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys F1182E81C792928921DBCAB4CFCA4A29D26468DE ||
+    gpg --batch --keyserver ipv4.pool.sks-keyservers.net --recv-keys F1182E81C792928921DBCAB4CFCA4A29D26468DE
+
     curl -o $tmpdir/sonarqube.zip -fSL https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${SONAR_VERSION}.zip
     curl -o $tmpdir/sonarqube.zip.asc -fSL https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${SONAR_VERSION}.zip.asc
     gpg --batch --verify $tmpdir/sonarqube.zip.asc $tmpdir/sonarqube.zip
