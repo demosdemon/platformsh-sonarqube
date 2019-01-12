@@ -1,10 +1,10 @@
 name: sonarqube
 disk: 512
+size: 4XL
 type: java:8
 
 relationships:
   database: postgresql:postgresql
-  search: search:elasticsearch
 
 variables:
   env:
