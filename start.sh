@@ -23,6 +23,6 @@ exec java -jar sonarqube/lib/sonar-application-$SONAR_VERSION.jar \
   -Dsonar.log.console=true \
   -Dsonar.jdbc.username="$database_username" \
   -Dsonar.jdbc.password="$database_password" \
-  -Dsonar.jdbc.url="$database_url" \
+  -Dsonar.jdbc.url="jdbc:$database_url" \
   -Dsonar.web.javaAdditionalOpts="$SONARQUBE_WEB_JVM_OPTS -Djava.security.egd=file:/dev/./urandom" \
   "${sq_opts[@]}"
